@@ -5,6 +5,10 @@ Group 12
 • Hewad Tahiri (100824648)
 • Mo Ali Khan (100)
 
+Home.ejs
+• Unsplash (https://unsplash.com)
+  ◦ Vlad Grebenyev (https://unsplash.com/photos/close-up-photography-of-car-wheel-7eCBiZgyr4E)
+
 Stylesheet.css
 • Bootstrap v5.2.3 (https://getbootstrap.com)
   ◦ Copyright 2011-2022 The Bootstrap Authors
