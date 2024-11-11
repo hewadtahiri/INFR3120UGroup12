@@ -3,7 +3,7 @@ INFR 3120U - Project (Part 1)
 Group 12
 • Desmond During (100874002)
 • Hewad Tahiri (100824648)
-• Mo Ali Khan (100)
+• Mo Ali Khan (100713787)
 
 Home.ejs
 • Unsplash (https://unsplash.com)
