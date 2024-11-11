@@ -1,0 +1,22 @@
+<!-- views/edit.ejs -->
+<div class="container px-5">
+  <h2>Edit Reservation</h2>
+  <form action="/reservations/edit/<%= reservation.id %>" method="POST">
+    <div class="form-group">
+      <label for="customer_name">Customer Name</label>
+      <input type="text" class="form-control" name="customer_name" value="<%= reservation.customer_name %>" required>
+    </div>
+    <div class="form-group">
+      <label for="car_model">Car Model</label>
+      <input type="text" class="form-control" name="car_model" value="<%= reservation.car_model %>" required>
+    </div>
+    <div class="form-group">
+      <label for="reservation_date">Reservation Date</label>
+      <input type="date" class="form-control" name="reservation_date" value="<%= reservation.reservation_date %>" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Reservation</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
