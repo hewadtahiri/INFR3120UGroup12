@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+/* const mongoose = require("mongoose");
 
 let reservationModel = mongoose.Schema({
     CustomerName: String,
@@ -6,4 +6,4 @@ let reservationModel = mongoose.Schema({
     ReservationDate: String,
 });
 
-module.exports = mongoose.model("reservation", reservationModel)
+module.exports = mongoose.model("reservation", reservationModel) */
