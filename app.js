@@ -8,8 +8,6 @@ app.set("views", path.join(__dirname, "Views"));
 
 app.use(express.static(path.join(__dirname, "Public")));
 app.use("/", routes);
-
-// Parses URL-encoded form data.
 app.use(express.urlencoded({ extended: true }));
 
 let reservations = [];
