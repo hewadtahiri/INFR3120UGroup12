@@ -5,4 +5,5 @@ let reservationModel = mongoose.Schema({
     CarModel: String,
     ReservationDate: String,
 });
-module.exports = mongoose.model('reservation',reservationModel)
+
+module.exports = mongoose.model("reservation", reservationModel)

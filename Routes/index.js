@@ -1,22 +1,22 @@
 const express = require("express");
 const router = express.Router();
-let mongoose = require('mongoose');
+let mongoose = require("mongoose");
 
 let reservations = [];
-let Reservation = require('../Models/reservation');
+let Reservation = require("../Models/reservation");
 
 router.get("/", (req, res) => {
   res.render("Layout", { title: "Home", body: "Home", reservations });
 });
 
 /*Code for Edit operation*/
-router.get('/edit/:id',async(req,res,next)=>{
+router.get("/edit/:id",async(req,res,next)=>{
   try{
       const id = req.params.id;
       const reservationToEdit = await Reservation.findById(id);
-      res.render('Reservation/edit',
+      res.render("Reservation/edit",
           {
-              title: 'Edit Reservation',
+              title: "Edit Reservation",
               Reservation:reservationToEdit
           }
       )
@@ -28,7 +28,7 @@ router.get('/edit/:id',async(req,res,next)=>{
   }
 });
 
-router.post('/edit/:id',async(req,res,next)=>{
+router.post("/edit/:id",async(req,res,next)=>{
   try{
       let id= req.params.id;
       let updatedReservation = Reservation({
@@ -39,31 +39,31 @@ router.post('/edit/:id',async(req,res,next)=>{
 
       })
       Reservation.findByIdAndUpdate(id, updatedReservation).then(()=>{
-          res.redirect('/')
+          res.redirect("/")
       })
   }
   catch(err)
   {
       console.error(err);
-      res.render('Reservation/list',{
-          error: 'Error on the server'
+      res.render("Reservation/list",{
+          error: "Error on the server"
       })
   }
 });
 
 /*Code for Delete operation*/
-router.get('/delete/:id',async(req,res,next)=>{
+router.get("/delete/:id",async(req,res,next)=>{
   try{
       let id=req.params.id;
       Reservation.deleteOne({_id:id}).then(()=>{
-          res.redirect('/')
+          res.redirect("/")
       })
   }
   catch(err)
   {
       console.error(err);
-      res.render('Reservation/list',{
-          error: 'Error on the server'
+      res.render("Reservation/list",{
+          error: "Error on the server"
       })
   }
 });
