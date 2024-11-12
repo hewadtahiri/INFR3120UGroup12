@@ -54,4 +54,4 @@ app.get("/reservations/delete/:id", (req, res) => {
   res.redirect("/");
 });
 
-module.exports = app;
+module.exports = { app, reservations };
