@@ -1,55 +1,57 @@
 const express = require("express");
-const path = require("path");
-const routes = require("./Routes/index");
 const app = express();
-
+const path = require("path");
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "Views"));
-
-app.use(express.static(path.join(__dirname, "Public")));
-app.use("/", routes);
+app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
+// Simulating a database with an array
 let reservations = [];
 
-// Renders Home view with reservations data.
+// Display all reservations
 app.get("/", (req, res) => {
-  res.render("Home", { reservations });
+  res.render("home", { reservations });
 });
 
-// Adds new reservation and redirects to home.
+// Create new reservation
 app.post("/reservations", (req, res) => {
   const newReservation = {
-    id: Date.now(), // Unique ID 
+    id: Date.now(),
     customer_name: req.body.customer_name,
     car_model: req.body.car_model,
     reservation_date: req.body.reservation_date,
   };
   reservations.push(newReservation);
-  res.redirect("/");
+  res.redirect("/");  // Redirect to home to show updated list
 });
 
-// Renders Edit view for a reservation by ID.
+// Edit reservation form
 app.get("/reservations/edit/:id", (req, res) => {
-  const reservation = reservations.find(r => r.id == req.params.id);
-  res.render("Edit", { reservation });
+  const reservationId = req.params.id;
+  const reservation = reservations.find(r => r.id == reservationId); // Find the reservation by id
+
+  if (reservation) {
+    res.render("home", { reservations, reservation }); // Pass the reservation along with reservations array
+  } else {
+    res.redirect("/"); // If reservation is not found, redirect to home
+  }
 });
 
-// Updates a reservation by ID and redirects to home.
+// Update reservation
 app.post("/reservations/edit/:id", (req, res) => {
-  const reservation = reservations.find(r => r.id == req.params.id);
+  const reservation = reservations.find((r) => r.id == req.params.id);
   if (reservation) {
     reservation.customer_name = req.body.customer_name;
     reservation.car_model = req.body.car_model;
     reservation.reservation_date = req.body.reservation_date;
   }
-  res.redirect("/");
+  res.redirect("/");  // Redirect to home to show updated list
 });
 
-// Deletes a reservation by ID and redirects to home.
+// Delete reservation
 app.get("/reservations/delete/:id", (req, res) => {
-  reservations = reservations.filter(r => r.id != req.params.id);
-  res.redirect("/");
+  reservations = reservations.filter((r) => r.id != req.params.id);
+  res.redirect("/");  // Redirect to home to show updated list
 });
 
 module.exports = app;
