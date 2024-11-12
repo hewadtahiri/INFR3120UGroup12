@@ -10,7 +10,7 @@ let reservations = [];
 
 // Home route
 app.get("/", (req, res) => {
-  res.render("home", { reservations });
+  res.render("Home", { reservations });
 });
 
 // Create reservation
@@ -28,7 +28,7 @@ app.post("/reservations", (req, res) => {
 // Edit reservation page
 app.get("/reservations/edit/:id", (req, res) => {
   const reservation = reservations.find(r => r.id == req.params.id);
-  res.render("edit", { reservation });
+  res.render("Edit", { reservation });
 });
 
 // Update reservation
