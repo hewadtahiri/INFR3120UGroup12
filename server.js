@@ -1,19 +1,20 @@
-// server.js
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true })); // To parse form data
+
+// Parses URL-encoded form data.
+app.use(express.urlencoded({ extended: true }));
 
 let reservations = [];
 
-// Home route
+// Renders Home view with reservations data.
 app.get("/", (req, res) => {
   res.render("Home", { reservations });
 });
 
-// Create reservation
+// Adds new reservation and redirects to home.
 app.post("/reservations", (req, res) => {
   const newReservation = {
     id: Date.now(), // Unique ID 
@@ -25,13 +26,13 @@ app.post("/reservations", (req, res) => {
   res.redirect("/");
 });
 
-// Edit reservation page
+// Renders Edit view for a reservation by ID.
 app.get("/reservations/edit/:id", (req, res) => {
   const reservation = reservations.find(r => r.id == req.params.id);
   res.render("Edit", { reservation });
 });
 
-// Update reservation
+// Updates a reservation by ID and redirects to home.
 app.post("/reservations/edit/:id", (req, res) => {
   const reservation = reservations.find(r => r.id == req.params.id);
   if (reservation) {
@@ -42,7 +43,7 @@ app.post("/reservations/edit/:id", (req, res) => {
   res.redirect("/");
 });
 
-// Delete reservation
+// Deletes a reservation by ID and redirects to home.
 app.get("/reservations/delete/:id", (req, res) => {
   reservations = reservations.filter(r => r.id != req.params.id);
   res.redirect("/");
