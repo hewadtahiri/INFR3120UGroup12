@@ -19,9 +19,11 @@
     <%- include("Partials/Navigation") %>
 
     <% if (body === "Home") { %>
-        <%- include("Home") %>
+      <%- include("Home", { reservations }); %>
+    <% } else if (body === "Edit") { %>
+      <%- include("Edit", { reservation }); %>
     <% } %>
->
+
     <%- include("Partials/Footer") %>
 
     <!-- Theme JavaScript -->
