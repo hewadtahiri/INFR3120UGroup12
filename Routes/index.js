@@ -18,6 +18,7 @@ router.post("/reservations", (req, res) => {
     reservation_date: req.body.reservation_date,
   };
   reservations.push(newReservation);
+  res.redirect("/");
 });
 
 // Edits an existing reservation.
@@ -45,11 +46,13 @@ router.post("/reservations/edit/:id", (req, res) => {
     reservation.car_model = req.body.car_model;
     reservation.reservation_date = req.body.reservation_date;
   }
+  res.redirect("/");
 });
 
 // Deletes an existing reservation.
 router.get("/reservations/delete/:id", (req, res) => {
   reservations = reservations.filter(r => r.id != req.params.id);
+  res.redirect("/");
 });
 
 module.exports = router;
