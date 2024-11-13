@@ -75,77 +75,75 @@
 </section>
 
 <!-- Reservations -->
-  <section id="reservations">
-    <div class="container px-5">
-      <!-- Display Reservations -->
-      <div class="p-3 mb-5 rounded shadow">
-        <h3 class="font-alt mb-2">Reservations</h3>
-        <table class="table table-striped">
-          <thead>
+<section id="reservations">
+  <div class="container px-5">
+    <!-- Display Reservations -->
+    <div class="p-3 mb-5 rounded shadow">
+      <h3 class="font-alt mb-2">Reservations</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Reservation ID</th>
+            <th>Customer Name</th>
+            <th>Car Model</th>
+            <th>Reservation Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% reservations.forEach(reservation => { %>
             <tr>
-              <th>Reservation ID</th>
-              <th>Customer Name</th>
-              <th>Car Model</th>
-              <th>Reservation Date</th>
-              <th>Actions</th>
+              <td><%= reservation.id %></td>
+              <td><%= reservation.customer_name %></td>
+              <td><%= reservation.car_model %></td>
+              <td><%= reservation.reservation_date %></td>
+              <td>
+                <a href="/reservations/edit/<%= reservation.id %>" class="btn btn-warning btn-sm">Edit</a>
+                <a href="/reservations/delete/<%= reservation.id %>" class="btn btn-danger btn-sm">Delete</a>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <% reservations.forEach(reservation => { %>
-              <tr>
-                <td><%= reservation.id %></td>
-                <td><%= reservation.customer_name %></td>
-                <td><%= reservation.car_model %></td>
-                <td><%= reservation.reservation_date %></td>
-                <td>
-                  <a href="/reservations/edit/<%= reservation.id %>" class="btn btn-warning btn-sm">Edit</a>
-                  <a href="/reservations/delete/<%= reservation.id %>" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-      <!-- Create Reservations -->
-      <div class="p-3 rounded shadow">
-        <h3 class="font-alt mb-2">Create New Reservation</h3>
-        <form action="/reservations" method="POST">
-          <div class="form-group mb-3">
-            <label for="customer_name">Customer Name</label>
-            <input type="text" class="form-control" name="customer_name" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="car_model">Car Model</label>
-            <input type="text" class="form-control" name="car_model" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="reservation_date">Reservation Date</label>
-            <input type="date" class="form-control" name="reservation_date" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Create Reservation</button>
-        </form>
-      </div>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
-  </section>
-  
-<!-- Edit Reservations -->
-<% if (typeof reservation !== 'undefined') { %>
-  <div class="container px-5 mt-5">
-    <h3>Edit Reservation</h3>
-    <form action="/reservations/edit/<%= reservation.id %>" method="POST">
-      <div class="form-group">
-        <label for="customer_name">Customer Name</label>
-        <input type="text" class="form-control" name="customer_name" value="<%= reservation.customer_name %>" required>
-      </div>
-      <div class="form-group">
-        <label for="car_model">Car Model</label>
-        <input type="text" class="form-control" name="car_model" value="<%= reservation.car_model %>" required>
-      </div>
-      <div class="form-group">
-        <label for="reservation_date">Reservation Date</label>
-        <input type="date" class="form-control" name="reservation_date" value="<%= reservation.reservation_date %>" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Update Reservation</button>
-    </form>
+    <!-- Create Reservations -->
+    <div class="p-3 rounded shadow">
+      <h3 class="font-alt mb-2">Create a Reservation</h3>
+      <form action="/reservations" method="POST">
+        <div class="form-group mb-3">
+          <label for="customer_name">Customer Name</label>
+          <input type="text" class="form-control" name="customer_name" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="car_model">Car Model</label>
+          <input type="text" class="form-control" name="car_model" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="reservation_date">Reservation Date</label>
+          <input type="date" class="form-control" name="reservation_date" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Reservation</button>
+      </form>
+    </div>
+    <!-- Edit Reservations -->
+    <div id="editReservationSection" class="p-3 rounded shadow" style="display: none;">
+      <h2>Edit Reservation</h2>
+      <form id="editForm" action="" method="POST">
+        <input type="hidden" id="reservationId" name="id">
+        <div class="form-group">
+          <label for="customer_name">Customer Name:</label>
+          <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+        </div>
+        <div class="form-group">
+          <label for="car_model">Car Model:</label>
+          <input type="text" class="form-control" id="car_model" name="car_model" required>
+        </div>
+        <div class="form-group">
+          <label for="reservation_date">Reservation Date:</label>
+          <input type="date" class="form-control" id="reservation_date" name="reservation_date" required>
+        </div>
+        <button type="submit" class="btn btn-success" onclick="hideEditSection()">Update</button>
+      </form>
+    </div>
   </div>
-<% } %>
+</section>

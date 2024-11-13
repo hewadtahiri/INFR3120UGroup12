@@ -21,3 +21,19 @@ window.addEventListener('DOMContentLoaded', event => {
     });
   });
 });
+
+// Displays the edit reservations section.
+function showEditSection(id) {
+  const reservation = window.reservations.find(r => r.id === id);
+  document.getElementById("customer_name").value = reservation.customer_name;
+  document.getElementById("car_model").value = reservation.car_model;
+  document.getElementById("reservation_date").value = reservation.reservation_date;
+  document.getElementById("reservationId").value = reservation.id;
+  document.getElementById("editForm").action = `/reservations/edit/${id}`;
+  document.getElementById("editReservationSection").style.display = "block";
+}
+
+// Hides the edit reservations section.
+function hideEditSection() {
+  document.getElementById("editReservationSection").style.display = "none";
+}
