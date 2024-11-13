@@ -6,7 +6,7 @@ let reservations = [];
 
 // Displays landing page and active reservations.
 router.get("/", (req, res) => {
-  res.render("Layout", { title: "Home", body: "Home", reservations });
+  res.render("Layout", { title: "Home", body: "Home", reservations, editReservation: null });
 });
 
 // Creates a new reservation.
