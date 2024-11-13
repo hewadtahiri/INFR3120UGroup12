@@ -1,71 +1,53 @@
 const express = require("express");
 const router = express.Router();
 
+// Simulates the database using an array.
 let reservations = [];
-// let mongoose = require("mongoose");
-// let reservation = require("../Models/reservation");
 
+// Displays landing page and active reservations.
 router.get("/", (req, res) => {
   res.render("Layout", { title: "Home", body: "Home", reservations });
 });
 
-/* Code for Edit operation
-router.get("/edit/:id",async(req,res,next)=>{
-  try{
-      const id = req.params.id;
-      const reservationToEdit = await Resereservationrvation.findById(id);
-      res.render("reservation/edit",
-          {
-              title: "Edit Reservation",
-              reservation:reservationToEdit
-          }
-      )
-  }
-  catch(err)
-  {
-      console.error(err);
-      next(err); // passing the error
+// Creates a new reservation.
+router.post("/reservations", (req, res) => {
+  const newReservation = {
+    id: Date.now(),
+    customer_name: req.body.customer_name,
+    car_model: req.body.car_model,
+    reservation_date: req.body.reservation_date,
+  };
+  reservations.push(newReservation);
+  res.redirect("/");
+});
+
+// Edits an existing reservation.
+router.get("/reservations/edit/:id", (req, res) => {
+  const reservationId = req.params.id;
+  const reservation = reservations.find(r => r.id == reservationId);
+
+  if (reservation) {
+    res.render("Layout", { title: "Edit Reservation", body: "Edit", reservations, reservation });
+  } else {
+    res.redirect("/");
   }
 });
 
-router.post("/edit/:id",async(req,res,next)=>{
-  try{
-      let id= req.params.id;
-      let updatedReservation = reservation({
-          "_id":id,
-          "CustomerName:":req.body.CustomerName,
-          "CarModel:":req.body.CarModel,
-          "ReservationDate:":req.body.ReservationDate
+// Updates an existing reservation.
+router.post("/reservations/edit/:id", (req, res) => {
+  const reservation = reservations.find(r => r.id == req.params.id);
+  if (reservation) {
+    reservation.customer_name = req.body.customer_name;
+    reservation.car_model = req.body.car_model;
+    reservation.reservation_date = req.body.reservation_date;
+  }
+  res.redirect("/");
+});
 
-      })
-      reservation.findByIdAndUpdate(id, updatedReservation).then(()=>{
-          res.redirect("/")
-      })
-  }
-  catch(err)
-  {
-      console.error(err);
-      res.render("reservation/list",{
-          error: "Error on the server."
-      })
-  }
-}); */
-
-/* Code for Delete operation
-router.get("/delete/:id",async(req,res,next)=>{
-  try{
-      let id=req.params.id;
-      reservation.deleteOne({_id:id}).then(()=>{
-          res.redirect("/")
-      })
-  }
-  catch(err)
-  {
-      console.error(err);
-      res.render("reservation/list",{
-          error: "Error on the server."
-      })
-  }
-}); */
+// Deletes an existing reservation.
+router.get("/reservations/delete/:id", (req, res) => {
+  reservations = reservations.filter(r => r.id != req.params.id);
+  res.redirect("/");
+});
 
 module.exports = router;
