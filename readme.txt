@@ -17,7 +17,6 @@ Home.ejs
 • Ferrari SF90 Image
   ◦ Motor1 (https://cdn.motor1.com/images/mgl/qkk7zv/s1/novitec-ferrari-sf90-stradale-2022.webp)
 
-
 Stylesheet.css
 • Bootstrap v5.2.3 (https://getbootstrap.com)
   ◦ Copyright 2011-2022 The Bootstrap Authors
