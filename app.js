@@ -10,7 +10,7 @@ let reservations = [];
 
 // Display all reservations
 app.get("/", (req, res) => {
-  res.render("home", { reservations });
+  res.render("Home", { reservations });
 });
 
 // Create new reservation
@@ -31,7 +31,7 @@ app.get("/reservations/edit/:id", (req, res) => {
   const reservation = reservations.find(r => r.id == reservationId); // Find the reservation by id
 
   if (reservation) {
-    res.render("home", { reservations, reservation }); // Pass the reservation along with reservations array
+    res.render("Home", { reservations, reservation }); // Pass the reservation along with reservations array
   } else {
     res.redirect("/"); // If reservation is not found, redirect to home
   }
