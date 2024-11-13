@@ -1,14 +1,17 @@
 const express = require("express");
-const app = express();
 const path = require("path");
+const app = express();
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "Views"));
+
+app.use(express.static(path.join(__dirname, "Public")));
 app.use(express.urlencoded({ extended: true }));
 
 // Simulating a database with an array
 let reservations = [];
 
-// Display all reservations
+// Renders Home view with reservations data.
 app.get("/", (req, res) => {
   res.render("Home", { reservations });
 });
