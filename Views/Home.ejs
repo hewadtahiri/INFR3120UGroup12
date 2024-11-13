@@ -104,7 +104,7 @@
         <% }) %>
       </tbody>
     </table>
-    <!-- Create Reservations Form -->
+    <!-- Create Reservations -->
     <div class="mt-5">
       <h2>Create a Reservation</h2>
       <form action="/reservations" method="POST">
@@ -140,12 +140,13 @@
             <label for="reservation_date" class="form-label">Reservation Date</label>
             <input type="date" id="reservation_date" name="reservation_date" class="form-control" value="<%= editReservation.reservation_date %>">
           </div>
+          <!-- Saves Edits -->
           <button type="submit" class="btn btn-success">Save Changes</button>
+          <!-- Cancels Edits -->
           <button type="button" class="btn btn-secondary" onclick="hideEditSection()">Cancel</button>
         </form>
       </div>
     <% } else { %>
-        <!-- Hidden by default if there's no reservation to edit -->
         <div id="editReservationSection" style="display: none;"></div>
     <% } %>
   </div>
