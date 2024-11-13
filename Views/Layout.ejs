@@ -21,7 +21,7 @@
     <% if (body === "Home") { %>
       <%- include("Home", { reservations }); %>
     <% } else if (body === "Edit") { %>
-      <%- include("Edit", { reservation }); %>
+      <%- include("Edit", { reservations, reservation }); %>
     <% } %>
 
     <%- include("Partials/Footer") %>
