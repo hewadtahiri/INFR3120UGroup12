@@ -27,7 +27,12 @@ router.get("/reservations/edit/:id", (req, res) => {
   const reservation = reservations.find(r => r.id == reservationId);
 
   if (reservation) {
-    res.render("Layout", { title: "Edit Reservation", body: "Edit", reservations, reservation });
+    res.render("Layout", {
+      title: "Home",
+      body: "Home",
+      reservations,
+      editReservation: reservation,
+    });
   } else {
     res.redirect("/");
   }
