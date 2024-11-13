@@ -18,11 +18,7 @@
   <body id="page-top">
     <%- include("Partials/Navigation") %>
 
-    <% if (body === "Home") { %>
-      <%- include("Home", { reservations }); %>
-    <% } else if (body === "Edit") { %>
-      <%- include("Edit", { reservations, reservation }); %>
-    <% } %>
+    <%- include("Home", { reservations }); %>
 
     <%- include("Partials/Footer") %>
 
