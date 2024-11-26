@@ -69,7 +69,7 @@ router.get("/reservations/delete/:id", authVerification, (req, res) => {
 });
 
 // Displays Login page.
-router.get("/login", (req, res) => {
+router.get("/login", (req, res, next) => {
   if (!req.user)
   {
     res.render("Authentication/login", { 
