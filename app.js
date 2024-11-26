@@ -23,6 +23,13 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// User Model Creation
+let userModel = require('../Models/user');
+let user = userModel.User;
+
+// Encrypting and Decrypting user data
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "Views"));
