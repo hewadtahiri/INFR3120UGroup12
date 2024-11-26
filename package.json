@@ -9,7 +9,21 @@
     "author": "Group 12",
     "license": "ISC",
     "dependencies": {
+        "connect-flash": "^0.1.1",
         "ejs": "^3.1.10",
-        "express": "^4.21.1"
+        "express": "^4.21.1",
+        "express-session": "^1.18.1",
+        "passport": "^0.7.0",
+        "passport-google-oauth": "^2.0.0",
+        "passport-local": "^1.0.0",
+        "passport-local-mongoose": "^8.0.0"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/express-session": "^1.18.1",
+        "@types/passport": "^1.0.17",
+        "@types/passport-google-oauth": "^1.0.45",
+        "@types/passport-local": "^1.0.38",
+        "@types/passport-local-mongoose": "^6.1.5"
     }
 }
