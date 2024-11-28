@@ -11,8 +11,7 @@ mongoose.connect(config.uri)
   .catch(err => console.error(`MongoDB Connection Error: ${err}`));
 
 // Creates the user model.
-let userModel = require("./Models/User.js");
-let User = userModel.schema;
+const User = require("./Models/User.js");
 
 // Creates authentication dependencies.
 let session = require("express-session");
