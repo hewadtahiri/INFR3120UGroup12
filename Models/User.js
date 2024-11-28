@@ -52,4 +52,4 @@ let options = ({IncorrectPasswordError: "Wrong or missing username/password."});
 schema.plugin(passportLocalMongoose, options);
 
 // Creates and exports the User model based on the schema.
-module.exports.schema = mongoose.model("User", schema);
+module.exports = mongoose.model("User", schema);
