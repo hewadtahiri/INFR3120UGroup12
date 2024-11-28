@@ -12,7 +12,7 @@ mongoose.connect(config.uri)
 
 // Creates the user model.
 let userModel = require("./Models/User.js");
-let User = userModel.User;
+let User = userModel.schema;
 
 // Creates authentication dependencies.
 let session = require("express-session");
