@@ -65,7 +65,25 @@ router.post("/reservations/edit/:id", authVerification, (req, res) => {
 
 // Deletes an existing reservation.
 router.get("/reservations/delete/:id", authVerification, (req, res) => {
-  reservations = reservations.filter(r => r.id != req.params.id);
+  const reservationId = req.params.id;
+
+  // Find the reservation by ID.
+  const reservation = reservations.find(r => r.id == reservationId);
+
+  if (!reservation) {
+    // If no reservation is found, redirect with an error message.
+    req.flash('error', 'Reservation not found.');
+    return res.redirect("/#reservations");
+  }
+
+  // Check if the logged-in user owns the reservation.
+  if (reservation.userId !== req.user._id) {
+    req.flash('error', 'You are not authorized to delete this reservation.');
+    return res.redirect("/#reservations");
+  }
+
+  // Proceed to delete if ownership is verified.
+  reservations = reservations.filter(r => r.id != reservationId);
   res.redirect("/#reservations");
 });
 
