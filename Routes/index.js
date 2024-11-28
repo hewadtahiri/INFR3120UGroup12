@@ -6,7 +6,7 @@ const User = require("../Models/User");
 // Simulates the database using an array.
 let reservations = [];
 
-// Authentication Verification.
+// Authentication verification.
 function authVerification(req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect("/login");
@@ -26,6 +26,7 @@ router.post("/reservations", authVerification, (req, res) => {
     customer_name: req.body.customer_name,
     car_model: req.body.car_model,
     reservation_date: req.body.reservation_date,
+    userId: req.user._id,
   };
   reservations.push(newReservation);
   res.redirect("/#reservations");
