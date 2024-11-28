@@ -19,7 +19,7 @@ function authVerification(req, res, next)
 
 // Displays home page and active reservations.
 router.get("/", (req, res) => {
-  res.render("Layout", { title: "Home", body: "Home", reservations, editReservation: null });
+  res.render("Layout", { title: "Home", body: "Home", reservations, editReservation: null, user: req.user });
 });
 
 // Creates a new reservation.
@@ -45,6 +45,7 @@ router.get("/reservations/edit/:id", authVerification, (req, res) => {
       body: "Home",
       reservations,
       editReservation: reservation,
+      user: req.user // Pass user data
     });
   } else {
     res.redirect("/#reservations");
@@ -77,9 +78,10 @@ router.get("/login", (req, res, next) => {
       body: "Login",
       displayName: req.user ? req.user.displayName: '', 
       reservations,
-      editReservation: null });
+      editReservation: null,
+      user: req.user // Pass user data
+    });
   }
-
   else
   {
     return res.redirect('/');
@@ -125,9 +127,10 @@ router.get("/register", (req, res) => {
       body: "Register",
       displayName: req.user ? req.user.displayName: '', 
       reservations,
-      editReservation: null });
+      editReservation: null,
+      user: req.user  //Pass user data 
+    });
   }
-
   else
   {
     return res.redirect('/');
