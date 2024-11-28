@@ -8,13 +8,11 @@ let User = userModel.User;
 let reservations = [];
 
 // Authentication Verification.
-function authVerification(req, res, next)
-{
-  if(!req.isAuthenticated())
-    {
-      return res.redirect('/login')
-    }
-    next();
+function authVerification(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+  next();
 }
 
 // Displays home page and active reservations.
@@ -45,7 +43,7 @@ router.get("/reservations/edit/:id", authVerification, (req, res) => {
       body: "Home",
       reservations,
       editReservation: reservation,
-      user: req.user // Pass user data
+      user: req.user,
     });
   } else {
     res.redirect("/#reservations");
@@ -67,131 +65,118 @@ router.post("/reservations/edit/:id", authVerification, (req, res) => {
 router.get("/reservations/delete/:id", authVerification, (req, res) => {
   const reservationId = req.params.id;
 
-  // Find the reservation by ID.
   const reservation = reservations.find(r => r.id == reservationId);
 
   if (!reservation) {
-    // If no reservation is found, redirect with an error message.
     req.flash('error', 'Reservation not found.');
     return res.redirect("/#reservations");
   }
 
-  // Check if the logged-in user owns the reservation.
   if (reservation.userId !== req.user._id) {
     req.flash('error', 'You are not authorized to delete this reservation.');
     return res.redirect("/#reservations");
   }
 
-  // Proceed to delete if ownership is verified.
   reservations = reservations.filter(r => r.id != reservationId);
   res.redirect("/#reservations");
 });
 
 // Displays Login page.
 router.get("/login", (req, res, next) => {
-  if (!req.user)
-  {
-    res.render("Authentication/Login", { 
-      title: "Login", 
+  if (!req.user) {
+    res.render("Authentication/Login", {
+      title: "Login",
       body: "Login",
-      displayName: req.user ? req.user.displayName: '', 
+      displayName: req.user ? req.user.displayName : '',
       reservations,
       editReservation: null,
-      user: req.user // Pass user data
+      user: req.user,
     });
-  }
-  else
-  {
+  } else {
     return res.redirect('/');
   }
-
 });
 
 // Posts Login page.
 router.post("/login", (req, res, next) => {
-  passport.authenticate('local',(err,user)=>
-    {
-      // Error Verification
+  passport.authenticate('local', (err, user) => {
+    if (err) {
+      return next(err);
+    }
 
-      // Server
-      if(err)
-        {
-          return next(err);
-        }
-      
-      // Login
-      if(!user)
-        {
-          req.flash('AuthenticationError');
-          return res.redirect('/login');
-        }
-      req.login(user,(err) => {
-        if(err)
-        {
-          return next(err)
-        }
-        return res.redirect('/#reservations')
-      })
-      
-    })(req,res,next)
+    if (!user) {
+      req.flash('AuthenticationError');
+      return res.redirect('/login');
+    }
+
+    req.login(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/#reservations');
+    });
+  })(req, res, next);
 });
 
 // Displays Registration page.
 router.get("/register", (req, res) => {
-  if (!req.user)
-  {
-    res.render("Authentication/Register", { 
-      title: "Register", 
+  if (!req.user) {
+    res.render("Authentication/Register", {
+      title: "Register",
       body: "Register",
-      displayName: req.user ? req.user.displayName: '', 
+      displayName: req.user ? req.user.displayName : '',
       reservations,
       editReservation: null,
-      user: req.user  //Pass user data 
+      user: req.user,
     });
-  }
-  else
-  {
+  } else {
     return res.redirect('/');
   }
-
 });
 
-// Posts Login page.
+// Posts Registration page.
 router.post("/register", (req, res) => {
+  if (!req.body.username || !req.body.email || !req.body.displayName || !req.body.password) {
+    return res.render('Authentication/Register', {
+      title: "Register",
+      body: "Register",
+      displayName: req.user ? req.user.displayName : '',
+      reservations,
+      editReservation: null,
+      user: req.user,
+      errorMessage: "All fields are required.",
+    });
+  }
+
   let registeredUser = new User({
     username: req.body.username,
     email: req.body.email,
     displayName: req.body.displayName,
-  })
-  User.register(registeredUser, req.body.password, (err) => {
-    if(err)
-    {
-      console.log("Error: Cannot Create new user");
-    
+  });
 
-      if(err.name=="ExistingUserError")
-      {
-        req.flash('registerMessage',
-        'Registration Error: User Already Exists.');
-          
+  User.register(registeredUser, req.body.password, (err) => {
+    if (err) {
+      console.error("Registration Error:", err);
+
+      if (err.name === "ExistingUserError") {
+        req.flash('registerMessage', 'Registration Error: User Already Exists.');
       }
 
-      return res.render('Authentication/Register',
-      {
-        title: "Register", 
+      return res.render('Authentication/Register', {
+        title: "Register",
         body: "Register",
-        displayName: req.user ? req.user.displayName: '', 
+        displayName: req.user ? req.user.displayName : '',
         reservations,
-        editReservation: null
+        editReservation: null,
+        user: req.user,
+        errorMessage: err.message,
       });
     }
-    else
-    {
-      return passport.authenticate('local')(req,res,()=>{
-        res.redirect('/#reservations')
-      })
-    }
-  })
+
+    return passport.authenticate('local')(req, res, () => {
+      res.redirect('/#reservations');
+    });
+  });
 });
 
 // User Logout.
@@ -199,4 +184,5 @@ router.get("/logout", (req, res) => {
   req.logout();
   res.redirect('/');
 });
+
 module.exports = router;
