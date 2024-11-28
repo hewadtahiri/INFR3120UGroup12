@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-let userModel = require('../Models/user');
+let userModel = require('../Models/User');
 let User = userModel.User;
 
 // Simulates the database using an array.
@@ -91,7 +91,7 @@ router.get("/reservations/delete/:id", authVerification, (req, res) => {
 router.get("/login", (req, res, next) => {
   if (!req.user)
   {
-    res.render("Authentication/login", { 
+    res.render("Authentication/Login", { 
       title: "Login", 
       body: "Login",
       displayName: req.user ? req.user.displayName: '', 
@@ -140,7 +140,7 @@ router.post("/login", (req, res, next) => {
 router.get("/register", (req, res) => {
   if (!req.user)
   {
-    res.render("Authentication/register", { 
+    res.render("Authentication/Register", { 
       title: "Register", 
       body: "Register",
       displayName: req.user ? req.user.displayName: '', 
@@ -176,7 +176,7 @@ router.post("/register", (req, res) => {
           
       }
 
-      return res.render('Authentication/register',
+      return res.render('Authentication/Register',
       {
         title: "Register", 
         body: "Register",
