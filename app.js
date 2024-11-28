@@ -4,7 +4,7 @@ const routes = require("./Routes/index");
 const app = express();
 
 // User Model Creation
-let userModel = require('./Models/user.js');
+let userModel = require('./Models/User.js');
 let User = userModel.User;
 
 // Creating Authentication Dependencies
