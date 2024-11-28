@@ -2,7 +2,8 @@ let mongoose = require("mongoose");
 let passportLocalMongoose = require("passport-local-mongoose");
 let passportGoogle = require("passport-google-oauth");
 
-let User = mongoose.Schema({
+// Defines the schema for users.
+let schema = mongoose.Schema({
     username:
     {
         type:String,
@@ -47,6 +48,8 @@ let User = mongoose.Schema({
 });
 
 // Configuration of authentication options.
-let options = ({IncorrectPasswordError:"Wrong or missing username/password."});
-User.plugin(passportLocalMongoose,options);
-module.exports.User = mongoose.model("User",User);
+let options = ({IncorrectPasswordError: "Wrong or missing username/password."});
+schema.plugin(passportLocalMongoose, options);
+
+// Creates and exports the User model based on the schema.
+module.exports.schema = mongoose.model("User", schema);
