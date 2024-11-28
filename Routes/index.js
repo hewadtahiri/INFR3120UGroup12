@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-let User = require("../Models/User").schema;
+const User = require("../Models/User");
 
 // Simulates the database using an array.
 let reservations = [];
