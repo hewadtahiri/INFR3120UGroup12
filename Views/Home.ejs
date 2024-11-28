@@ -112,21 +112,25 @@
     <!-- Create Reservations -->
     <div class="mt-5">
       <h2>Create a Reservation</h2>
-      <form action="/reservations" method="POST">
-        <div class="mb-3">
-          <label for="customer_name" class="form-label">Customer Name</label>
-          <input type="text" id="customer_name" name="customer_name" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="car_model" class="form-label">Car Model</label>
-          <input type="text" id="car_model" name="car_model" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="reservation_date" class="form-label">Reservation Date</label>
-          <input type="date" id="reservation_date" name="reservation_date" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Create Reservation</button>
-      </form>
+      <% if (user) { %>
+        <form action="/reservations" method="POST">
+          <div class="mb-3">
+            <label for="customer_name" class="form-label">Customer Name</label>
+            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="car_model" class="form-label">Car Model</label>
+            <input type="text" class="form-control" id="car_model" name="car_model" required>
+          </div>
+          <div class="mb-3">
+            <label for="reservation_date" class="form-label">Reservation Date</label>
+            <input type="date" class="form-control" id="reservation_date" name="reservation_date" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Reservation</button>
+        </form>
+      <% } else { %>
+        <p class="text-danger">You must be logged in to create a reservation.</p>
+      <% } %>
     </div>
     <!-- Edit Reservations -->
     <% if (editReservation) { %>
