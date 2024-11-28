@@ -1,36 +1,41 @@
 const express = require("express");
 const path = require("path");
+const mongoose = require("mongoose");
 const routes = require("./Routes/index");
 const app = express();
+const config = require("./config");
 
-// User Model Creation
-let userModel = require('./Models/User.js');
+// Connects to MongoDB cluster.
+mongoose.connect(config.uri)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error(`MongoDB Connection Error: ${err}`));
+
+// Creates the user model.
+let userModel = require("./Models/User.js");
 let User = userModel.User;
 
-// Creating Authentication Dependencies
-let session = require('express-session');
-let passport = require('passport');
-let passportLocal = require('passport-local');
-let passportGoogle = require('passport-google-oauth');
+// Creates authentication dependencies.
+let session = require("express-session");
+let passport = require("passport");
+let passportLocal = require("passport-local");
+let passportGoogle = require("passport-google-oauth");
 passport.use(User.createStrategy());
 let localStrategy = passportLocal.Strategy;
-let flash = require('connect-flash');
+let flash = require("connect-flash");
 
-// Setting up Cookies
+// Sets up cookies.
 app.use(session({
     secret:"Cookie",
     saveUninitialized:false,
     resave:false
 }))
 
-// Initializing Dependencies
+// Initializes dependencies.
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-// Encrypting and Decrypting user data
+// Encrypts and decrypts user data.
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

@@ -1,6 +1,6 @@
-let mongoose = require('mongoose');
-let passportLocalMongoose = require('passport-local-mongoose');
-let passportGoogle = require('passport-google-oauth');
+let mongoose = require("mongoose");
+let passportLocalMongoose = require("passport-local-mongoose");
+let passportGoogle = require("passport-google-oauth");
 
 let User = mongoose.Schema({
     username:
@@ -15,7 +15,7 @@ let User = mongoose.Schema({
         type:String,
         default:"",
         trim:true,
-        required:'Password is required'
+        required:"Password is required"
     },
     displayName:
     {
@@ -29,7 +29,7 @@ let User = mongoose.Schema({
         type:String,
         default:"",
         trim:true,
-        required:'Email is required'
+        required:"Email is required"
     },
     created:
     {
@@ -47,6 +47,6 @@ let User = mongoose.Schema({
 });
 
 // Configuration of authentication options.
-let options = ({IncorrectPasswordError:"Wrong or Missing Username/Password."});
+let options = ({IncorrectPasswordError:"Wrong or missing username/password."});
 User.plugin(passportLocalMongoose,options);
-module.exports.User = mongoose.model('User',User);
+module.exports.User = mongoose.model("User",User);

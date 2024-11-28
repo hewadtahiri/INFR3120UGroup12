@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-let userModel = require('../Models/User');
+let userModel = require("../Models/User");
 let User = userModel.User;
 
 // Simulates the database using an array.
@@ -10,7 +10,7 @@ let reservations = [];
 // Authentication Verification.
 function authVerification(req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
   next();
 }
@@ -68,12 +68,12 @@ router.get("/reservations/delete/:id", authVerification, (req, res) => {
   const reservation = reservations.find(r => r.id == reservationId);
 
   if (!reservation) {
-    req.flash('error', 'Reservation not found.');
+    req.flash("error", "Reservation not found.");
     return res.redirect("/#reservations");
   }
 
   if (reservation.userId !== req.user._id) {
-    req.flash('error', 'You are not authorized to delete this reservation.');
+    req.flash("error", "You are not authorized to delete this reservation.");
     return res.redirect("/#reservations");
   }
 
@@ -87,33 +87,33 @@ router.get("/login", (req, res, next) => {
     res.render("Authentication/Login", {
       title: "Login",
       body: "Login",
-      displayName: req.user ? req.user.displayName : '',
+      displayName: req.user ? req.user.displayName : "",
       reservations,
       editReservation: null,
       user: req.user,
     });
   } else {
-    return res.redirect('/');
+    return res.redirect("/");
   }
 });
 
 // Posts Login page.
 router.post("/login", (req, res, next) => {
-  passport.authenticate('local', (err, user) => {
+  passport.authenticate("local", (err, user) => {
     if (err) {
       return next(err);
     }
 
     if (!user) {
-      req.flash('AuthenticationError');
-      return res.redirect('/login');
+      req.flash("AuthenticationError");
+      return res.redirect("/login");
     }
 
     req.login(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.redirect('/#reservations');
+      return res.redirect("/#reservations");
     });
   })(req, res, next);
 });
@@ -124,23 +124,23 @@ router.get("/register", (req, res) => {
     res.render("Authentication/Register", {
       title: "Register",
       body: "Register",
-      displayName: req.user ? req.user.displayName : '',
+      displayName: req.user ? req.user.displayName : "",
       reservations,
       editReservation: null,
       user: req.user,
     });
   } else {
-    return res.redirect('/');
+    return res.redirect("/");
   }
 });
 
 // Posts Registration page.
 router.post("/register", (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.displayName || !req.body.password) {
-    return res.render('Authentication/Register', {
+    return res.render("Authentication/Register", {
       title: "Register",
       body: "Register",
-      displayName: req.user ? req.user.displayName : '',
+      displayName: req.user ? req.user.displayName : "",
       reservations,
       editReservation: null,
       user: req.user,
@@ -159,13 +159,13 @@ router.post("/register", (req, res) => {
       console.error("Registration Error:", err);
 
       if (err.name === "ExistingUserError") {
-        req.flash('registerMessage', 'Registration Error: User Already Exists.');
+        req.flash("registerMessage", "Registration Error: User Already Exists.");
       }
 
-      return res.render('Authentication/Register', {
+      return res.render("Authentication/Register", {
         title: "Register",
         body: "Register",
-        displayName: req.user ? req.user.displayName : '',
+        displayName: req.user ? req.user.displayName : "",
         reservations,
         editReservation: null,
         user: req.user,
@@ -173,8 +173,8 @@ router.post("/register", (req, res) => {
       });
     }
 
-    return passport.authenticate('local')(req, res, () => {
-      res.redirect('/#reservations');
+    return passport.authenticate("local")(req, res, () => {
+      res.redirect("/#reservations");
     });
   });
 });
@@ -182,7 +182,7 @@ router.post("/register", (req, res) => {
 // User Logout.
 router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect("/");
 });
 
 module.exports = router;
