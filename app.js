@@ -10,7 +10,7 @@ mongoose.connect(config.uri)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(`MongoDB Connection Error: ${err}`));
 
-// Creates the user model.
+// Imports the User model.
 const User = require("./Models/User.js");
 
 // Creates authentication dependencies.

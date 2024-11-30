@@ -6,7 +6,7 @@ const User = require("../Models/User");
 // Simulates the database using an array.
 let reservations = [];
 
-// Authentication verification.
+// Verifies user authentication before granting access to the requested page.
 function authVerification(req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect("/login");
@@ -81,7 +81,7 @@ router.get("/reservations/delete/:id", authVerification, (req, res) => {
   res.redirect("/#reservations");
 });
 
-// Displays Login page.
+// Displays the login page if the user is not authenticated, otherwise redirects to the homepage.
 router.get("/login", (req, res, next) => {
   if (!req.user) {
     res.render("Authentication/Login", {
@@ -97,7 +97,7 @@ router.get("/login", (req, res, next) => {
   }
 });
 
-// Posts Login page.
+// Handles user login authentication, redirects to the reservations section on success, or back to the login page on failure.
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user) => {
     if (err) {
@@ -118,7 +118,7 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-// Displays Registration page.
+// Displays the registration page if the user is not authenticated, otherwise redirects to the homepage.
 router.get("/register", (req, res) => {
   if (!req.user) {
     res.render("Authentication/Register", {
@@ -134,7 +134,7 @@ router.get("/register", (req, res) => {
   }
 });
 
-// Posts Registration page.
+// Handles user registration, validates input fields, and registers the user. Redirects to reservations page on success, or displays error messages on failure.
 router.post("/register", (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.displayName || !req.body.password) {
     return res.render("Authentication/Register", {
@@ -179,7 +179,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-// User Logout.
+// Logs out the user and redirects to the homepage.
 router.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {

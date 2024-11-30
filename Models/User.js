@@ -42,4 +42,5 @@ schema.plugin(passportLocalMongoose);
 
 // Creates and exports the User model based on the schema.
 const User = mongoose.model("User", schema);
+
 module.exports = User;

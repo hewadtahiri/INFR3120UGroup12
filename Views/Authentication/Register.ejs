@@ -1,60 +1,53 @@
 <main class="container">
-    <!--Registration Form-->
-    <div class="row">
-        <div class="offset-md-4 col-md-4">
-            <h1>Register with email</h1>
-            <form method="post" autocomplete="off">
-                <!--Input Section for User's Credentials-->
-                <fieldset class="form-group">
-                    <label for="email"></label>
-                    <input type="email" class="form-control"
-                    name="email"
-                    placeholder="Enter your email address"
-                    id="email" required autofocus>
-                </fieldset>
+  <div class="row">
+    <div class="offset-md-4 col-md-4">
+      <h1>Register with email</h1>
+      <form method="post" autocomplete="off">
+        <!--Register Form-->
+        <fieldset class="form-group">
+          <label for="email"></label>
+          <input type="email" class="form-control"
+          name="email"
+          placeholder="Enter your email address"
+          id="email" required autofocus>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="username"></label>
+          <input type="text" class="form-control"
+          name="username"
+          placeholder="Enter a username"
+          id="username" required autofocus>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="displayName"></label>
+          <input type="text" class="form-control"
+          name="displayName"
+          placeholder="Enter a Display Name"
+          id="displayName" required autofocus>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="password"></label>
+          <input type="password" class="form-control"
+          name="password"
+          placeholder="Enter your password"
+          id="password" required>
+        </fieldset>
+        <fieldset class="form-group-right">
+          <input type="submit" class="btn btn-success"
+          value="Register">
+          <a href="/">
+            <input type="button" class="btn btn-warning" value="Cancel">
+          </a>
+        </fieldset>
 
-                <fieldset class="form-group">
-                    <label for="username"></label>
-                    <input type="text" class="form-control"
-                    name="username"
-                    placeholder="Enter a username"
-                    id="username" required autofocus>
-                </fieldset>
-
-                <fieldset class="form-group">
-                    <label for="displayName"></label>
-                    <input type="text" class="form-control"
-                    name="displayName"
-                    placeholder="Enter a Display Name"
-                    id="displayName" required autofocus>
-                </fieldset>
-
-                <fieldset class="form-group">
-                    <label for="password"></label>
-                    <input type="password" class="form-control"
-                    name="password"
-                    placeholder="Enter your password"
-                    id="password" required>
-                </fieldset>
-
-                <fieldset class="form-group-right">
-                    <input type="submit" class="btn btn-success"
-                    value="Register">
-                    <a href="/">
-                        <input type="button" class="btn btn-warning" value="Cancel">
-                    </a>
-                </fieldset>
-
-                <!--Google Registration-->
-                <h1> Or using Google</h1>
-                
-                <fieldset class="form-group-right">
-                    <a href="#!">
-                        <input type="button" class="btn btn-warning" value="Google SignUp">
-                    </a>
-                </fieldset>
-            </form>
-            
-        </div>
+        <!--Google Register Form-->
+        <h1> Register with Google</h1>
+        <fieldset class="form-group-right">
+          <a href="#!">
+            <input type="button" class="btn btn-warning" value="Google SignUp">
+          </a>
+        </fieldset>
+      </form>
     </div>
+  </div>
 </main>
