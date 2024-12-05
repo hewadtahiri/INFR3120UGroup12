@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
+const Credentials = require("../Models/Credentials");
 const Reservations = require("../Models/Reservations");
 
 // Verifies user authentication before granting access to the requested page.
@@ -11,14 +12,25 @@ function authVerification(req, res, next) {
   next();
 }
 
-// Displays home page and active reservations.
+// Displays Home page and active reservations.
 router.get("/", async (req, res) => {
+  // Check if req.user exists before trying to access user_id
+  if (!req.user) {
+    return res.redirect("/login");
+  }
+
   try {
-    const reservations = await Reservations.find({ user_id: req.user._id });
-    res.render("Layout", { title: "Home", body: "Home", reservations, editReservation: null, user: req.user });
-  } catch (err) {
-    console.error(err);
-    res.redirect("/#reservations");
+    const reservation = await Reservations.find({ user_id: req.user._id }).exec();
+    res.render("Layout", { 
+      title: "Home", 
+      body: "Home", 
+      reservation, 
+      editReservation: null, 
+      user: req.user 
+    });
+  } catch (error) {
+    console.error("Error fetching reservations:", error);
+    res.status(500).send("Server error");
   }
 });
 
@@ -31,39 +43,47 @@ router.post("/reservations", authVerification, async (req, res) => {
       reservation_date: req.body.reservation_date,
       user_id: req.user._id,
     });
+
     await newReservation.save();
     res.redirect("/#reservations");
-  } catch (err) {
-    console.error(err);
-    res.redirect("/#reservations");
+  } catch (error) {
+    console.error("Error creating reservation:", error);
+    res.status(500).send("Server error");
   }
 });
 
 // Edits an existing reservation.
 router.get("/reservations/edit/:id", authVerification, async (req, res) => {
+  const reservationId = req.params.id;
+
   try {
-    const reservation = await Reservations.findById(req.params.id);
+    const reservation = await Reservations.findById(reservationId).exec();
+
     if (reservation) {
+      const reservations = await Reservations.find({ user_id: req.user._id }).exec();
       res.render("Layout", {
         title: "Home",
         body: "Home",
-        reservations: await Reservations.find({ user_id: req.user._id }),
+        reservation: reservations,
         editReservation: reservation,
         user: req.user,
       });
     } else {
       res.redirect("/#reservations");
     }
-  } catch (err) {
-    console.error(err);
-    res.redirect("/#reservations");
+  } catch (error) {
+    console.error("Error fetching reservation:", error);
+    res.status(500).send("Server error");
   }
 });
 
 // Updates an existing reservation.
 router.post("/reservations/edit/:id", authVerification, async (req, res) => {
+  const reservationId = req.params.id;
+
   try {
-    const reservation = await Reservations.findById(req.params.id);
+    const reservation = await Reservations.findById(reservationId).exec();
+
     if (reservation) {
       reservation.customer_name = req.body.customer_name;
       reservation.car_model = req.body.car_model;
@@ -71,16 +91,19 @@ router.post("/reservations/edit/:id", authVerification, async (req, res) => {
       await reservation.save();
     }
     res.redirect("/#reservations");
-  } catch (err) {
-    console.error(err);
-    res.redirect("/#reservations");
+  } catch (error) {
+    console.error("Error updating reservation:", error);
+    res.status(500).send("Server error");
   }
 });
 
 // Deletes an existing reservation.
 router.get("/reservations/delete/:id", authVerification, async (req, res) => {
+  const reservationId = req.params.id;
+
   try {
-    const reservation = await Reservations.findById(req.params.id);
+    const reservation = await Reservations.findById(reservationId).exec();
+
     if (!reservation) {
       req.flash("error", "Reservation not found.");
       return res.redirect("/#reservations");
@@ -91,22 +114,22 @@ router.get("/reservations/delete/:id", authVerification, async (req, res) => {
       return res.redirect("/#reservations");
     }
 
-    await reservation.deleteOne();
+    await reservation.delete();
     res.redirect("/#reservations");
-  } catch (err) {
-    console.error(err);
-    res.redirect("/#reservations");
+  } catch (error) {
+    console.error("Error deleting reservation:", error);
+    res.status(500).send("Server error");
   }
 });
 
-// Displays the Login page if the user is not authenticated, otherwise redirects to the Home page.
-router.get("/login", (req, res, next) => {
+// Displays the login page if the user is not authenticated, otherwise redirects to the Home page.
+router.get("/login", async (req, res) => {
   if (!req.user) {
     res.render("Authentication/Login", {
       title: "Login",
       body: "Login",
       displayName: req.user ? req.user.displayName : "",
-      reservations: [],
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
     });
@@ -115,7 +138,7 @@ router.get("/login", (req, res, next) => {
   }
 });
 
-// Handles user login authentication, redirects to the Reservations section on success, or back to the Login page on failure.
+// Handles user login authentication, redirects to the reservations section on success, or back to the Login page on failure.
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user) => {
     if (err) {
@@ -137,13 +160,13 @@ router.post("/login", (req, res, next) => {
 });
 
 // Displays the registration page if the user is not authenticated, otherwise redirects to the Home page.
-router.get("/register", (req, res) => {
+router.get("/register", async (req, res) => {
   if (!req.user) {
     res.render("Authentication/Register", {
       title: "Register",
       body: "Register",
       displayName: req.user ? req.user.displayName : "",
-      reservations: [],
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
     });
@@ -153,13 +176,13 @@ router.get("/register", (req, res) => {
 });
 
 // Handles user registration, validates input fields, and registers the user. Redirects to Reservations page on success, or displays error messages on failure.
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.displayName || !req.body.password) {
     return res.render("Authentication/Register", {
       title: "Register",
       body: "Register",
       displayName: req.user ? req.user.displayName : "",
-      reservations: [],
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
       errorMessage: "All fields are required.",
@@ -172,7 +195,7 @@ router.post("/register", (req, res) => {
     displayName: req.body.displayName,
   });
 
-  Credentials.register(registeredUser, req.body.password, (err) => {
+  Credentials.register(registeredUser, req.body.password, async (err) => {
     if (err) {
       console.error("Registration Error:", err);
 
@@ -184,7 +207,7 @@ router.post("/register", (req, res) => {
         title: "Register",
         body: "Register",
         displayName: req.user ? req.user.displayName : "",
-        reservations: [],
+        reservation: await Reservations.find({ user_id: req.user._id }).exec(),
         editReservation: null,
         user: req.user,
         errorMessage: err.message,
