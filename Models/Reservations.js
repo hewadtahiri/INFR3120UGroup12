@@ -32,6 +32,6 @@ const schema = new mongoose.Schema(
 );
 
 // Creates and exports the Reservations model based on the schema.
-const Reservation = mongoose.model("Reservations", schema);
+const Reservations = mongoose.model("Reservations", schema);
 
-module.exports = Reservation;
+module.exports = Reservations;
