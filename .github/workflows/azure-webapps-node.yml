@@ -69,11 +69,6 @@ jobs:
       with:
         name: node-app
 
-    - name: Set up Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-
     - name: 'Deploy to Azure WebApp'
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
