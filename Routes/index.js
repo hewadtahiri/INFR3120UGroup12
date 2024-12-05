@@ -161,7 +161,7 @@ router.post("/register", async (req, res) => {
     displayName: req.body.displayName,
   });
 
-  Credentials.register(registeredUser, req.body.password, (err) => {
+  Credentials.register(registeredUser, req.body.password, async (err) => {
     if (err) {
       console.error("Registration Error:", err);
 
