@@ -7,7 +7,7 @@ const schema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: "Username is required.",
+      required: "Username is required",
       trim: true,
     },
     password: {
@@ -17,12 +17,12 @@ const schema = new mongoose.Schema(
     displayName: {
       type: String,
       trim: true,
-      required: "Display name is required.",
+      required: "Display name is required",
     },
     email: {
       type: String,
       trim: true,
-      required: "Email is required.",
+      required: "Email is required",
     },
     created: {
       type: Date,
