@@ -14,112 +14,78 @@ function authVerification(req, res, next) {
 
 // Displays Home page and active reservations.
 router.get("/", async (req, res) => {
-  // Check if req.user exists before trying to access user_id
-  if (!req.user) {
-    return res.redirect("/login");
-  }
-
-  try {
-    const reservation = await Reservations.find({ user_id: req.user._id }).exec();
-    res.render("Layout", { 
-      title: "Home", 
-      body: "Home", 
-      reservation, 
-      editReservation: null, 
-      user: req.user 
-    });
-  } catch (error) {
-    console.error("Error fetching reservations:", error);
-    res.status(500).send("Server error");
-  }
+  const reservation = await Reservations.find({ user_id: req.user._id }).exec();
+  res.render("Layout", { 
+    title: "Home", 
+    body: "Home", 
+    reservation, 
+    editReservation: null, 
+    user: req.user 
+  });
 });
 
 // Creates a new reservation.
 router.post("/reservations", authVerification, async (req, res) => {
-  try {
-    const newReservation = new Reservations({
-      customer_name: req.body.customer_name,
-      car_model: req.body.car_model,
-      reservation_date: req.body.reservation_date,
-      user_id: req.user._id,
-    });
+  const newReservation = new Reservations({
+    customer_name: req.body.customer_name,
+    car_model: req.body.car_model,
+    reservation_date: req.body.reservation_date,
+    user_id: req.user._id,
+  });
 
-    await newReservation.save();
-    res.redirect("/#reservations");
-  } catch (error) {
-    console.error("Error creating reservation:", error);
-    res.status(500).send("Server error");
-  }
+  await newReservation.save();
+  res.redirect("/#reservations");
 });
 
 // Edits an existing reservation.
 router.get("/reservations/edit/:id", authVerification, async (req, res) => {
   const reservationId = req.params.id;
+  const reservation = await Reservations.findById(reservationId).exec();
 
-  try {
-    const reservation = await Reservations.findById(reservationId).exec();
-
-    if (reservation) {
-      const reservations = await Reservations.find({ user_id: req.user._id }).exec();
-      res.render("Layout", {
-        title: "Home",
-        body: "Home",
-        reservation: reservations,
-        editReservation: reservation,
-        user: req.user,
-      });
-    } else {
-      res.redirect("/#reservations");
-    }
-  } catch (error) {
-    console.error("Error fetching reservation:", error);
-    res.status(500).send("Server error");
+  if (reservation) {
+    res.render("Layout", {
+      title: "Home",
+      body: "Home",
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
+      editReservation: reservation,
+      user: req.user,
+    });
+  } else {
+    res.redirect("/#reservations");
   }
 });
 
 // Updates an existing reservation.
 router.post("/reservations/edit/:id", authVerification, async (req, res) => {
   const reservationId = req.params.id;
+  const reservation = await Reservations.findById(reservationId).exec();
 
-  try {
-    const reservation = await Reservations.findById(reservationId).exec();
-
-    if (reservation) {
-      reservation.customer_name = req.body.customer_name;
-      reservation.car_model = req.body.car_model;
-      reservation.reservation_date = req.body.reservation_date;
-      await reservation.save();
-    }
-    res.redirect("/#reservations");
-  } catch (error) {
-    console.error("Error updating reservation:", error);
-    res.status(500).send("Server error");
+  if (reservation) {
+    reservation.customer_name = req.body.customer_name;
+    reservation.car_model = req.body.car_model;
+    reservation.reservation_date = req.body.reservation_date;
+    await reservation.save();
   }
+  res.redirect("/#reservations");
 });
 
 // Deletes an existing reservation.
 router.get("/reservations/delete/:id", authVerification, async (req, res) => {
   const reservationId = req.params.id;
+  const reservation = await Reservations.findById(reservationId).exec();
 
-  try {
-    const reservation = await Reservations.findById(reservationId).exec();
-
-    if (!reservation) {
-      req.flash("error", "Reservation not found.");
-      return res.redirect("/#reservations");
-    }
-
-    if (reservation.user_id.toString() !== req.user._id.toString()) {
-      req.flash("error", "You are not authorized to delete this reservation.");
-      return res.redirect("/#reservations");
-    }
-
-    await reservation.delete();
-    res.redirect("/#reservations");
-  } catch (error) {
-    console.error("Error deleting reservation:", error);
-    res.status(500).send("Server error");
+  if (!reservation) {
+    req.flash("error", "Reservation not found.");
+    return res.redirect("/#reservations");
   }
+
+  if (reservation.user_id.toString() !== req.user._id.toString()) {
+    req.flash("error", "You are not authorized to delete this reservation.");
+    return res.redirect("/#reservations");
+  }
+
+  await reservation.delete();
+  res.redirect("/#reservations");
 });
 
 // Displays the login page if the user is not authenticated, otherwise redirects to the Home page.
