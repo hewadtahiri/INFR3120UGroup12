@@ -92,23 +92,23 @@
       <tbody>
         <% reservations.forEach(reservation => { %>
           <tr>
-            <td><%= reservation._id %></td>
+            <td><%= reservation.id %></td>
             <td><%= reservation.customer_name %></td>
             <td><%= reservation.car_model %></td>
             <td><%= reservation.reservation_date %></td>
             <td>
               <% if (user) { %>
-                <a href="/reservations/edit/<%= reservation._id %>" class="btn btn-primary btn-sm">Edit</a>
-                <a href="/reservations/delete/<%= reservation._id %>" class="btn btn-danger btn-sm">Delete</a>
+                <a href="/reservations/edit/<%= reservation.id %>" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/reservations/delete/<%= reservation.id %>" class="btn btn-danger btn-sm">Delete</a>
               <% } else { %>
                 <span class="text-muted">Login to manage reservations</span>
               <% } %>
             </td>
+
           </tr>
         <% }) %>
       </tbody>
     </table>
-    
     <!-- Create Reservations -->
     <div class="mt-5">
       <h2>Create a Reservation</h2>
@@ -132,12 +132,11 @@
         <p class="text-danger">You must be logged in to create a reservation.</p>
       <% } %>
     </div>
-    
     <!-- Edit Reservations -->
     <% if (editReservation) { %>
       <div id="editReservationSection" class="mt-5">
         <h2>Edit Reservation</h2>
-        <form id="editForm" action="/reservations/edit/<%= editReservation._id %>" method="POST">
+        <form id="editForm" action="/reservations/edit/<%= editReservation.id %>" method="POST">
           <div class="mb-3">
             <label for="customer_name" class="form-label">Customer Name</label>
             <input type="text" id="customer_name" name="customer_name" class="form-control" value="<%= editReservation.customer_name %>">
@@ -150,10 +149,14 @@
             <label for="reservation_date" class="form-label">Reservation Date</label>
             <input type="date" id="reservation_date" name="reservation_date" class="form-control" value="<%= editReservation.reservation_date %>">
           </div>
+          <!-- Saves Edits -->
           <button type="submit" class="btn btn-success">Save Changes</button>
-          <button type="button" class="btn btn-secondary" onclick="window.location.href='/reservations'">Cancel</button>
+          <!-- Cancels Edits -->
+          <button type="button" class="btn btn-secondary" onclick="hideEditSection()">Cancel</button>
         </form>
       </div>
+    <% } else { %>
+        <div id="editReservationSection" style="display: none;"></div>
     <% } %>
   </div>
 </section>

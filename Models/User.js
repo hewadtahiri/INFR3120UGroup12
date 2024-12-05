@@ -34,8 +34,7 @@ const schema = new mongoose.Schema(
     },
   },
   {
-    collection: "credentials",
-    db: "project",
+    collection: "users",
   }
 );
 
