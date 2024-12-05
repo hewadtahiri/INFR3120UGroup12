@@ -10,15 +10,15 @@ mongoose.connect(config.uri)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(`MongoDB Connection Error: ${err}`));
 
-// Imports the User model.
-const User = require("./Models/User.js");
+// Imports the Credentials model.
+const Credentials = require("./Models/Credentials.js");
 
 // Creates authentication dependencies.
 let session = require("express-session");
 let passport = require("passport");
 let passportLocal = require("passport-local");
 let passportGoogle = require("passport-google-oauth");
-passport.use(User.createStrategy());
+passport.use(Credentials.createStrategy());
 let localStrategy = passportLocal.Strategy;
 let flash = require("connect-flash");
 
@@ -35,8 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Encrypts and decrypts user data.
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(Credentials.serializeUser());
+passport.deserializeUser(Credentials.deserializeUser());
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "Views"));

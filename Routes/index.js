@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-const User = require("../Models/User");
+const Credentials = require("../Models/Credentials");
 const Reservation = require("../Models/Reservations");
 
 // Verifies user authentication before granting access to the requested page.
@@ -155,13 +155,13 @@ router.post("/register", (req, res) => {
     });
   }
 
-  let registeredUser = new User({
+  let registeredUser = new Credentials({
     username: req.body.username,
     email: req.body.email,
     displayName: req.body.displayName,
   });
 
-  User.register(registeredUser, req.body.password, (err) => {
+  Credentials.register(registeredUser, req.body.password, (err) => {
     if (err) {
       console.error("Registration Error:", err);
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 let passportGoogle = require("passport-google-oauth");
 
-// Defines the schema for users.
+// Defines the schema for user credentials.
 const schema = new mongoose.Schema(
   {
     username: {
@@ -42,6 +42,6 @@ const schema = new mongoose.Schema(
 schema.plugin(passportLocalMongoose);
 
 // Creates and exports the User model based on the schema.
-const User = mongoose.model("User", schema);
+const Credentials = mongoose.model("Credentials", schema);
 
-module.exports = User;
+module.exports = Credentials;
