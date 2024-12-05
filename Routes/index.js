@@ -89,7 +89,7 @@ router.get("/reservations/delete/:id", authVerification, async (req, res) => {
 });
 
 // Displays the login page if the user is not authenticated, otherwise redirects to the Home page.
-router.get("/login", async (req, res) => {
+router.get("/login", (req, res) => {
   if (!req.user) {
     res.render("Authentication/Login", {
       title: "Login",
@@ -126,7 +126,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // Displays the registration page if the user is not authenticated, otherwise redirects to the Home page.
-router.get("/register", async (req, res) => {
+router.get("/register", (req, res) => {
   if (!req.user) {
     res.render("Authentication/Register", {
       title: "Register",
@@ -142,7 +142,7 @@ router.get("/register", async (req, res) => {
 });
 
 // Handles user registration, validates input fields, and registers the user. Redirects to Reservations page on success, or displays error messages on failure.
-router.post("/register", async (req, res) => {
+router.post("/register", (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.displayName || !req.body.password) {
     return res.render("Authentication/Register", {
       title: "Register",
