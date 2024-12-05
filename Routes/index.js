@@ -14,11 +14,11 @@ function authVerification(req, res, next) {
 
 // Displays Home page and active reservations.
 router.get("/", async (req, res) => {
-  const reservations = await Reservations.find({ user_id: req.user._id }).exec();
+  const reservation = await Reservations.find({ user_id: req.user._id }).exec();
   res.render("Layout", { 
     title: "Home", 
     body: "Home", 
-    reservations, 
+    reservation, 
     editReservation: null, 
     user: req.user 
   });
@@ -46,7 +46,7 @@ router.get("/reservations/edit/:id", authVerification, async (req, res) => {
     res.render("Layout", {
       title: "Home",
       body: "Home",
-      reservations: await Reservations.find({ user_id: req.user._id }).exec(),
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: reservation,
       user: req.user,
     });
@@ -95,7 +95,7 @@ router.get("/login", (req, res) => {
       title: "Login",
       body: "Login",
       displayName: req.user ? req.user.displayName : "",
-      reservations: await Reservations.find({ user_id: req.user._id }).exec(),
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
     });
@@ -132,7 +132,7 @@ router.get("/register", (req, res) => {
       title: "Register",
       body: "Register",
       displayName: req.user ? req.user.displayName : "",
-      reservations: await Reservations.find({ user_id: req.user._id }).exec(),
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
     });
@@ -148,7 +148,7 @@ router.post("/register", (req, res) => {
       title: "Register",
       body: "Register",
       displayName: req.user ? req.user.displayName : "",
-      reservations: await Reservations.find({ user_id: req.user._id }).exec(),
+      reservation: await Reservations.find({ user_id: req.user._id }).exec(),
       editReservation: null,
       user: req.user,
       errorMessage: "All fields are required.",
@@ -173,7 +173,7 @@ router.post("/register", (req, res) => {
         title: "Register",
         body: "Register",
         displayName: req.user ? req.user.displayName : "",
-        reservations: await Reservations.find({ user_id: req.user._id }).exec(),
+        reservation: await Reservations.find({ user_id: req.user._id }).exec(),
         editReservation: null,
         user: req.user,
         errorMessage: err.message,
