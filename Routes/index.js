@@ -15,16 +15,15 @@ function authVerification(req, res, next) {
 // Displays Home page and active reservations.
 router.get("/", async (req, res) => {
   try {
-    if (!req.user) {
-      return res.redirect("/");
-    }
-    const reservations = await Reservations.find({ userId: req.user._id });
+    // If the user is authenticated, fetch their reservations, otherwise pass an empty array.
+    const reservations = req.user ? await Reservations.find({ userId: req.user._id }) : [];
+    
     res.render("Layout", {
       title: "Home",
       body: "Home",
       reservations,
       editReservation: null,
-      user: req.user,
+      user: req.user || null,
     });
   } catch (error) {
     console.error("Error fetching reservations:", error);
