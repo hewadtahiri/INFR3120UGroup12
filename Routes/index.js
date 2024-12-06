@@ -17,11 +17,26 @@ router.get("/", async (req, res) => {
   try {
     // If the user is authenticated, fetch their reservations, otherwise pass an empty array.
     const reservations = req.user ? await Reservations.find({ userId: req.user._id }) : [];
-    
+
+    // Format the reservation dates
+    const formattedReservations = reservations.map(reservation => {
+      const formattedDate = new Date(reservation.reservation_date).toLocaleDateString("en-US", {
+        weekday: 'long',    // e.g. "Tuesday"
+        year: 'numeric',    // e.g. "2024"
+        month: 'long',      // e.g. "December"
+        day: 'numeric'      // e.g. "10"
+      });
+
+      return {
+        ...reservation.toObject(),
+        formattedDate
+      };
+    });
+
     res.render("Layout", {
       title: "Home",
       body: "Home",
-      reservations,
+      reservations: formattedReservations,
       editReservation: null,
       user: req.user || null,
     });
