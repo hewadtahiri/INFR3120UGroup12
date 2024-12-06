@@ -101,7 +101,7 @@ router.get("/reservations/delete/:id", authVerification, async (req, res) => {
       return res.redirect("/#reservations");
     }
 
-    await reservation.remove();
+    await Reservations.deleteOne({ _id: req.params.id });
     res.redirect("/#reservations");
   } catch (error) {
     console.error("Error deleting reservation:", error);
