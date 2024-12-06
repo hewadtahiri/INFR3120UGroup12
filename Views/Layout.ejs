@@ -15,6 +15,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
   </head>
   
+  <body id="page-top" class="d-flex flex-column min-vh-100">
+    <%- include("Partials/Navigation") %>
+
+    <main class="flex-grow-1">
+      <% if (title === "Login") { %>
+        <%- include("Authentication/Login") %>
+      <% } else if (title === "Register") { %>
+        <%- include("Authentication/Register") %>
+      <% } else { %>
+        <%- include(body, { reservations, editReservation }) %>
+      <% } %>
+    </main>
+
+    <%- include("Partials/Footer") %>
+
+    <!-- JavaScript -->
+    <script src="/JavaScript/Scripts.js"></script>
+    <!-- Passes reservation data to JavaScript. -->
+    <script>window.reservations = <%= JSON.stringify(reservations) %>;</script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+  </body>
+
   <body id="page-top">
     <%- include("Partials/Navigation") %>
 
