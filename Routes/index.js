@@ -15,6 +15,9 @@ function authVerification(req, res, next) {
 // Displays Home page and active reservations.
 router.get("/", async (req, res) => {
   try {
+    if (!req.user) {
+      return res.redirect("/login");
+    }
     const reservations = await Reservations.find({ userId: req.user._id });
     res.render("Layout", {
       title: "Home",
