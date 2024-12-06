@@ -24,10 +24,10 @@ let flash = require("connect-flash");
 
 // Sets up cookies.
 app.use(session({
-    secret:"Cookie",
-    saveUninitialized:false,
-    resave:false
-}))
+    secret: "Cookie",
+    saveUninitialized: false,
+    resave: false
+}));
 
 // Initializes dependencies.
 app.use(flash());
@@ -43,6 +43,33 @@ app.set("views", path.join(__dirname, "Views"));
 
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(express.urlencoded({ extended: true }));
+
+// Redirect users to the home page if they're not logged in
+app.use((req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/'); // Redirect to home page if not authenticated
+  }
+  next(); // Continue if the user is authenticated
+});
+
+// Apply the routes
 app.use("/", routes);
+
+// Handle the home page and login routes
+app.get("/", (req, res) => {
+  res.render("home", { user: req.user });
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// Any other routes here will be protected by authentication
+app.get("/protected", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/"); // Redirect to home if not authenticated
+  }
+  res.render("protectedPage", { user: req.user });
+});
 
 module.exports = app;
