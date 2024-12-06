@@ -48,7 +48,7 @@ router.post("/reservations", authVerification, async (req, res) => {
 });
 
 // Edits an existing reservation.
-router.get("/reservations/edit/:id", authVerification, async (req, res) => {
+router.get("/reservations/edit/:id#reservations", authVerification, async (req, res) => {
   try {
     const reservation = await Reservations.findById(req.params.id);
 
@@ -156,7 +156,7 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.redirect("/#reservations");
+      return res.redirect("/");
     });
   })(req, res, next);
 });
