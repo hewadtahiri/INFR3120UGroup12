@@ -16,7 +16,7 @@ function authVerification(req, res, next) {
 router.get("/", async (req, res) => {
   try {
     if (!req.user) {
-      return res.redirect("/login");
+      return res.redirect("/");
     }
     const reservations = await Reservations.find({ userId: req.user._id });
     res.render("Layout", {
