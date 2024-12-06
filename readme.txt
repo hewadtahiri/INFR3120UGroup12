@@ -1,4 +1,4 @@
-INFR 3120U - Project (Part 2)
+INFR 3120U - Project (Part 3)
 
 Group 12
 • Desmond During (100874002)
