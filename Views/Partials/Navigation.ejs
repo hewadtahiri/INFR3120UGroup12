@@ -23,13 +23,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
-        <% if (title=="Home") { %>
-          <li class="nav-item"><a class="nav-link me-lg-3" href="/#cars">Cars</a></li>
-          <li class="nav-item"><a class="nav-link me-lg-3" href="/#reservations">Reservations</a></li>
-        <% } else { %>
-          <li class="nav-item"><a class="nav-link me-lg-3" href="/">Cars</a></li>
-          <li class="nav-item"><a class="nav-link me-lg-3" href="/">Reservations</a></li>
-        <% } %>
+        <li class="nav-item"><a class="nav-link me-lg-3" href="#cars">Cars</a></li>
+        <li class="nav-item"><a class="nav-link me-lg-3" href="#reservations">Reservations</a></li>
         <!-- Displays a "Login" button if the user is not authenticated, otherwise displays a "Log Out" button. -->
         <% if (!user) { %>
           <a class="nav-link" href="/login">Login</a>
@@ -38,5 +33,5 @@
         <% } %>
       </ul>
     </div>
-  </div>
+  </div>  
 </nav>
