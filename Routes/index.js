@@ -60,7 +60,6 @@ router.get("/reservations/edit/:id", authVerification, async (req, res) => {
         editReservation: reservation,
         user: req.user,
       });
-
     } else {
       res.redirect("/#reservations");
     }

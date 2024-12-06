@@ -98,7 +98,7 @@
             <td><%= reservation.reservation_date %></td>
             <td>
               <% if (user) { %>
-                <a href="/reservations/edit/<%= reservation.id %>" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/reservations/edit/<%= reservation._id %>#reservations" class="btn btn-primary btn-sm">Edit</a>
                 <a href="/reservations/delete/<%= reservation.id %>" class="btn btn-danger btn-sm">Delete</a>
               <% } else { %>
                 <span class="text-muted">Login to manage reservations</span>
