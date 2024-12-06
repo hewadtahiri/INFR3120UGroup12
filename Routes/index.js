@@ -51,17 +51,16 @@ router.post("/reservations", authVerification, async (req, res) => {
 router.get("/reservations/edit/:id", authVerification, async (req, res) => {
   try {
     const reservation = await Reservations.findById(req.params.id);
-    if (reservation && reservation.userId.toString() === req.user._id.toString()) {
-      res.render("Layout", {
-        title: "Home",
-        body: "Home",
-        reservations: await Reservations.find({ userId: req.user._id }),
-        editReservation: reservation,
-        user: req.user,
-      });
-    } else {
-      res.redirect("/#reservations");
-    }
+    
+    res.render("Layout", {
+      title: "Home",
+      body: "Home",
+      reservations: await Reservations.find({ userId: req.user._id }),
+      editReservation: reservation || null,
+      user: req.user,
+    });
+    
+    res.redirect("/#reservations");
   } catch (error) {
     console.error("Error fetching reservation for editing:", error);
     res.status(500).send("Error fetching reservation.");
