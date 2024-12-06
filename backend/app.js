@@ -24,10 +24,10 @@ let flash = require("connect-flash");
 
 // Sets up cookies.
 app.use(session({
-    secret: "Cookie",
-    saveUninitialized: false,
-    resave: false
-}));
+    secret:"Cookie",
+    saveUninitialized:false,
+    resave:false
+}))
 
 // Initializes dependencies.
 app.use(flash());
@@ -38,23 +38,11 @@ app.use(passport.session());
 passport.serializeUser(Credentials.serializeUser());
 passport.deserializeUser(Credentials.deserializeUser());
 
-// Set view engine and paths
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "../frontend/Views"));
+app.set("views", path.join(__dirname, "Views"));
 
-// Serve static files (CSS, JS, images)
-app.use(express.static(path.join(__dirname, "../frontend/Public")));
-
-// Middleware to parse request bodies
+app.use(express.static(path.join(__dirname, "Public")));
 app.use(express.urlencoded({ extended: true }));
-
-// Use the routes for the app
 app.use("/", routes);
-
-// Start server on the defined port
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
 module.exports = app;
