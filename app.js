@@ -5,7 +5,7 @@ const routes = require("./Routes/index");
 const app = express();
 const config = require("./config");
 
-// Connects to MongoDB cluster.
+// Connect to MongoDB cluster.
 mongoose.connect(config.uri)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error(`MongoDB Connection Error: ${err}`));
@@ -17,24 +17,23 @@ const Credentials = require("./Models/Credentials.js");
 let session = require("express-session");
 let passport = require("passport");
 let passportLocal = require("passport-local");
-let passportGoogle = require("passport-google-oauth");
 passport.use(Credentials.createStrategy());
-let localStrategy = passportLocal.Strategy;
 let flash = require("connect-flash");
 
-// Sets up cookies.
+// Session configuration
 app.use(session({
-    secret: "Cookie",
-    saveUninitialized: false,
-    resave: false
+  secret: "Cookie",               // Session secret key
+  resave: false,                  // Don't save unmodified sessions
+  saveUninitialized: false,       // Don't save new sessions if unmodified
+  cookie: { secure: false }       // Make sure the cookie works in development (set to true in production with HTTPS)
 }));
 
-// Initializes dependencies.
+// Initialize passport.js
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Encrypts and decrypts user data.
+// Serialize and deserialize user data
 passport.serializeUser(Credentials.serializeUser());
 passport.deserializeUser(Credentials.deserializeUser());
 
@@ -44,31 +43,30 @@ app.set("views", path.join(__dirname, "Views"));
 app.use(express.static(path.join(__dirname, "Public")));
 app.use(express.urlencoded({ extended: true }));
 
-// Redirect users to the home page if they're not logged in
-app.use((req, res, next) => {
+// Middleware to ensure user is authenticated before accessing protected routes
+// NOTE: This should only be used for routes that require authentication
+app.use("/protected", (req, res, next) => {
   if (!req.isAuthenticated()) {
-    return res.redirect('/'); // Redirect to home page if not authenticated
+    return res.redirect("/login"); // Redirect to login if not authenticated
   }
-  next(); // Continue if the user is authenticated
+  next(); // Proceed to the next middleware or route
 });
 
-// Apply the routes
+// Routes
 app.use("/", routes);
 
-// Handle the home page and login routes
+// Home Route
 app.get("/", (req, res) => {
   res.render("home", { user: req.user });
 });
 
+// Login Route
 app.get("/login", (req, res) => {
   res.render("login");
 });
 
-// Any other routes here will be protected by authentication
+// Protected Route
 app.get("/protected", (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/"); // Redirect to home if not authenticated
-  }
   res.render("protectedPage", { user: req.user });
 });
 
