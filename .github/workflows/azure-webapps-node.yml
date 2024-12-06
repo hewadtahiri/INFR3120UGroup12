@@ -42,19 +42,19 @@ jobs:
     - name: Build frontend
       working-directory: ./frontend
       run: |
-        npm run build --if-present 
+        npm run build --if-present
 
     # Run tests for frontend
     - name: Run tests for frontend
       working-directory: ./frontend
       run: |
-        npm run test --if-present || true
+        npm run test --if-present
 
     # Run tests for backend
     - name: Run tests for backend
       working-directory: ./backend
       run: |
-        npm run test --if-present || true
+        npm run test --if-present
 
     # Upload frontend and backend as artifacts for deployment
     - name: Upload frontend artifact
