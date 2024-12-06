@@ -42,7 +42,7 @@ jobs:
     - name: Build frontend
       working-directory: ./frontend
       run: |
-        npm run build --if-present 
+        npm run build --if-present
 
     # Run tests for frontend
     - name: Run tests for frontend
@@ -79,6 +79,14 @@ jobs:
       url: ${{ steps.deploy-frontend.outputs.webapp-url }}
 
     steps:
+    # Azure Login
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     - name: Download frontend artifact
       uses: actions/download-artifact@v3
       with:
@@ -102,6 +110,14 @@ jobs:
       url: ${{ steps.deploy-backend.outputs.webapp-url }}
 
     steps:
+    # Azure Login
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     - name: Download backend artifact
       uses: actions/download-artifact@v3
       with:
