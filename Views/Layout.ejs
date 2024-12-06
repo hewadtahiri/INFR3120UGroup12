@@ -17,7 +17,15 @@
   
   <body id="page-top">
     <%- include("Partials/Navigation") %>
-    <%- include(body, { reservations, editReservation }) %>
+
+    <% if (title === "Login") { %>
+      <%- include("Authentication/Login") %>
+    <% } else if (title === "Register") { %>
+      <%- include("Authentication/Register") %>
+    <% } else { %>
+      <%- include(body, { reservations, editReservation }) %>
+    <% } %>
+
     <%- include("Partials/Footer") %>
 
     <!-- JavaScript -->
