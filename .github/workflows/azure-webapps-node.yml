@@ -44,15 +44,8 @@ jobs:
       run: |
         npm run build --if-present
 
-    # Run tests for frontend
-    - name: Run tests for frontend
-      working-directory: ./frontend
-      run: |
-        npm run test --if-present
-
-    # Run tests for backend
-    - name: Run tests for backend
-      working-directory: ./backend
+    # Run tests (if applicable)
+    - name: Run tests for frontend and backend
       run: |
         npm run test --if-present
 
@@ -114,3 +107,4 @@ jobs:
         app-name: ${{ env.AZURE_BACKEND_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_BACKEND_WEBAPP_PUBLISH_PROFILE }}
         package: './backend'
+
