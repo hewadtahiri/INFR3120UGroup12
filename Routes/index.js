@@ -72,10 +72,23 @@ router.get("/reservations/edit/:id", authVerification, async (req, res) => {
 router.post("/reservations/edit/:id", authVerification, async (req, res) => {
   try {
     const reservation = await Reservations.findById(req.params.id);
+    
     if (reservation && reservation.userId.toString() === req.user._id.toString()) {
+      if (!req.body.reservation_date) {
+        return res.render("Layout", {
+          title: "Home",
+          body: "Home",
+          reservations: await Reservations.find({ userId: req.user._id }),
+          editReservation: reservation,
+          user: req.user,
+          errorMessage: "Reservation date is required.",
+        });
+      }
+
       reservation.customer_name = req.body.customer_name;
       reservation.car_model = req.body.car_model;
       reservation.reservation_date = req.body.reservation_date;
+
       await reservation.save();
       res.redirect("/#reservations");
     } else {
