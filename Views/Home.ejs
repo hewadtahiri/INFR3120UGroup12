@@ -147,7 +147,7 @@
           </div>
           <div class="mb-3">
             <label for="reservation_date" class="form-label">Reservation Date</label>
-            <input type="date" id="reservation_date" name="reservation_date" class="form-control" value="<%= editReservation.reservation_date %>">
+            <input type="date" class="form-control" id="reservation_date" name="reservation_date" value="<%= editReservation ? editReservation.reservation_date.toISOString().split('T')[0] : '' %>" required>
           </div>
           <!-- Saves Edits -->
           <button type="submit" class="btn btn-success">Save Changes</button>
